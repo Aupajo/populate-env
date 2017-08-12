@@ -1,7 +1,8 @@
 # populate-env
 
-A command-line tool for populating environment variables.
+[![Build Status](https://travis-ci.org/Aupajo/populate-env.svg?branch=master)](https://travis-ci.org/Aupajo/populate-env)
 
+A command-line tool for populating environment variables.
 
 ## Installation
 
