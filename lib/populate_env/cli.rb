@@ -1,5 +1,7 @@
+require 'optparse'
 require 'populate_env/version'
 require 'populate_env/cli/runner'
+require 'populate_env/cli/heroku_options'
 
 module PopulateEnv
   module CLI

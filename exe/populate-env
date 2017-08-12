@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
 
+require 'populate_env'
 require 'populate_env/cli'
 PopulateEnv::CLI.start

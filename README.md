@@ -27,10 +27,14 @@ This command should be equivalent to the following flags:
     populate-env heroku \
         --manifest app.json \
         --output .env \
-        --output-format shell \
-        --heroku-remote heroku \
-        --generate-secrets hex \
+        --local-env \
+        --heroku-config \
+        --generate-secrets \
         --prompt-missing
+
+For full options, run:
+
+    populate-env heroku --help
 
 ## Development
 

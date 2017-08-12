@@ -19,6 +19,18 @@ module PopulateEnv
         expect { CLI.start(argv: '--version') }.to output(/42.0/).to_stdout
         expect { CLI.start(argv: 'version') }.to output(/42.0/).to_stdout
       end
+
+      it 'runs the Heroku strategy' do
+        parsed_options = double(:config)
+
+        expect(CLI::HerokuOptions).to receive(:parse)
+          .with(%w( --various options ), command: 'command heroku')
+          .and_return(parsed_options)
+        
+        expect(PopulateEnv::Heroku).to receive(:call).with(parsed_options)
+
+        CLI.start(argv: %w( heroku --various options ), executable: 'command')
+      end
     end
   end
 end

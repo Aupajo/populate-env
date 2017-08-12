@@ -8,10 +8,22 @@ module PopulateEnv
       end
 
       def run
-        option_parser.parse!(argv)
-        send(@subcommand || argv.first || :help)
+        send(subcommand)
       end
-
+      
+      def help
+        output.puts option_parser.to_s
+      end
+      
+      def version
+        output.puts "#{executable} version #{VERSION}"
+      end
+      
+      def heroku
+        options = CLI::HerokuOptions.parse(argv, command: "#{executable} heroku")
+        PopulateEnv::Heroku.call(options)
+      end
+      
       private
 
       def option_parser
@@ -25,12 +37,14 @@ module PopulateEnv
         end
       end
 
-      def help
-        output.puts option_parser.to_s
+      def parse_options!
+        option_parser.parse!(argv)
+      rescue OptionParser::InvalidOption
       end
 
-      def version
-        output.puts "#{executable} version #{VERSION}"
+      def subcommand(fallback: :help)
+        method_name = @subcommand || argv.shift || fallback
+        respond_to?(method_name) ? method_name : fallback
       end
     end
   end
