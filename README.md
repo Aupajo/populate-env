@@ -15,11 +15,11 @@ For a Heroku-based project with an [app.json manifest](https://blog.heroku.com/i
 This will:
 
 * Parse your project's `app.json` file for required environment variables
-* Create a `.env` file, attempting to populate each value in the following order:
-  * The value of a local environment variable
+* Create a `.env` file, attempting to populate each variable in the following order:
+  * The value of an identically-named local environment variable
   * The default value as specified in `app.json`
-  * A psuedo-randomly generated secret for variables marked with `generate: secret`
-  * The environment variable as configured in a Heroku remote
+  * A psuedo-randomly generated secret (for variables marked with `generate: secret`)
+  * The environment variable as configured in Heroku (if a Heroku git remote is set)
   * A user-entered prompt
 
 This command should be equivalent to the following flags:
