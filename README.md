@@ -2,35 +2,116 @@
 
 A command-line tool for populating environment variables.
 
+
 ## Installation
 
     gem install populate-env
 
-## Goals
+## Usage
 
-For a Heroku-based project with an [app.json manifest](https://blog.heroku.com/introducing_the_app_json_application_manifest), run:
+### Heroku
 
-    populate-env heroku
+Heroku apps can describe which environment variables they need via an [app.json manifest](https://blog.heroku.com/introducing_the_app_json_application_manifest):
 
-This will:
+```json
+{
+  "env": {
+    "BRAND_COLOUR": "smaragdine",
+    "AMAZING_WEB_SERVICES_TOKEN": {
+      "description": "A required token for interacting with Amazing Web Services."
+    },
+    "WEB_CONCURRENCY": {
+      "description": "The number of processes to run.",
+      "value": "5"
+    },
+    "LEATHER_SEATS": {
+      "description": "Optional flag to enable leather seats.",
+      "required": false
+    },
+    "SECRET_TOKEN": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    }
+  },
+  "environments": {
+    "test": {
+      "AMAZING_WEB_SERVICES_TOKEN": "mock"
+    }
+  }
+}
+```
 
-* Parse your project's `app.json` file for required environment variables
-* Create a `.env` file, attempting to populate each variable in the following order:
-  * The value of an identically-named local environment variable
-  * The default value as specified in `app.json`
-  * A psuedo-randomly generated secret (for variables marked with `generate: secret`)
-  * The environment variable as configured in Heroku (if a Heroku git remote is set)
-  * A user-entered prompt
+Given this file, running the following command will generate a `.env` file:
 
-This command should be equivalent to the following flags:
+    $ populate-env heroku
+    
+    BRAND_COLOUR: "smaragdine"
+      => using default from app.json
+    
+    AMAZING_WEB_SERVICES_TOKEN: "token-from-heroku-app"
+      => using value from detected Heroku remote "dev"
+    
+    WEB_CONCURRENCY: "5"
+      => using default from app.json
+    
+    LEATHER_SEATS: (skipped)
+      => no value available
+    
+    SECRET_TOKEN: "1d8505..."
+      => generated secret (32 chars)
+    
+    WEB_CONCURRENCY: "5"
+      => using default from app.json
+
+The resulting `.env` file looks like this:
+
+```shell
+BRAND_COLOUR=smaragdine
+
+# A required token for interacting with Amazing Web Services.
+AMAZING_WEB_SERVICES_TOKEN=token-from-heroku-app
+
+# The number of processes to run.
+WEB_CONCURRENCY=5
+
+# Optional flag to enable leather seats.
+# LEATHER_SEATS=
+
+# A secret key for verifying the integrity of signed cookies.
+SECRET_TOKEN=1d8505fa8172fae3b17f5e57568406b8
+```
+
+Any required environment variable not currently in your ENV will be populated by trying each of the following:
+
+1. Using the default value, as specified in your `app.json`
+2. Generating a pseudorandom secret (for environment variables marked with `generator: secret`)
+3. Using the values from your remote Heroku instance
+4. Prompting you for a missing, required value
+
+The command above is equivalent to the following options:
 
     populate-env heroku \
         --manifest app.json \
-        --output .env \
-        --local-env \
+        --manifest-environment production \
+        --destination .env \
+        --skip-local-env \
         --heroku-config \
         --generate-secrets \
         --prompt-missing
+
+#### Remote Heroku config
+
+If your project has a git remote with `heroku.com` in the URL, `populate-env`
+will detect it and use it to retrieve remote configuration. If you don't want
+this behaviour, you can skip it with:
+
+    populate-env heroku --no-heroku-config
+
+If you have multiple Heroku remotes or want to specify your Heroku app
+explicitly, you can use either:
+
+    populate-env heroku --heroku-remote staging # or
+    populate-env heroku --heroku-app spronking-wildebeest-42
 
 For full options, run:
 

@@ -1,0 +1,39 @@
+{
+  "env": {
+    "SIMPLE": "value",
+    "ENV_VAR": {
+      "description": "A setting already present in the user's ENV"
+    },
+    "OVERRIDDEN": {
+      "value": "original",
+      "description": "A setting overridden at the environment-level"
+    },
+    "SECRET": {
+      "description": "A secret",
+      "generator": "secret"
+    },
+    "OPTIONAL": {
+      "description": "An optional setting",
+      "required": false
+    },
+    "REMOTE": {
+      "description": "A setting fetched from a Heroku remote"
+    },
+    "MISSING": {
+      "description": "A required, missing setting",
+      "required": true
+    }
+  },
+  "environments": {
+    "test": {
+      "env": {
+        "OVERRIDDEN": "test"
+      }
+    },
+    "production": {
+      "env": {
+        "OVERRIDDEN": "development"
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ module PopulateEnv
     module HerokuOptions 
       module_function
 
-      def parse(argv, command:, options: PopulateEnv::Heroku.defaults)
+      def parse(argv, command:, options: PopulateEnv::Heroku::Options.new)
         parser = OptionParser.new
 
         parser.accept(Pathname) { |path| Pathname(path) }
@@ -16,15 +16,20 @@ module PopulateEnv
         parser.on("--manifest FILE", Pathname, description) do |value|
           options.manifest = value
         end
-
-        description = "File to write (defaults to #{options.output})"
-        parser.on("--output FILE", Pathname, description) do |value|
-          options.output = value
+        
+        description = "File to write (defaults to #{options.destination})"
+        parser.on("--destination FILE", Pathname, description) do |value|
+          options.destination = value
         end
 
-        description = "Use local environment variables (defaults to #{options.use_heroku_config})"
-        parser.on("--[no-]local-env", description) do |value|
-          options.use_local_env = value
+        description = "Environment to read from the app.json manifest (defaults to #{options.manifest_environment})"
+        parser.on("-e", "--manifest-environment ENVIRONMENT", description) do |value|
+          options.manifest_environment = value
+        end
+
+        description = "Skip environment variables currently set in your shell (defaults to #{options.skip_local_env})"
+        parser.on("--[no-]skip-local-env", description) do |value|
+          options.skip_local_env = value
         end
         
         description = "Populate missing environment variables from Heroku (defaults to #{options.use_heroku_config})"

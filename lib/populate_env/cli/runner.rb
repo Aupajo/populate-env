@@ -27,13 +27,22 @@ module PopulateEnv
       private
 
       def option_parser
-        @option_parser ||= OptionParser.new do |opts|
-          opts.banner = "Usage: #{executable} [options]"
+        @option_parser ||= OptionParser.new do |parser|
+          parser.banner = <<~BANNER
+            Usage:
+                #{executable} COMMAND [options]
+            
+            Commands:
+                heroku
+            
+            Options:
+          BANNER
 
-          opts.on('-h', '--help', 'Show this help')
+          description = 'Show the help (combine with a command for full options)'
+          parser.on('-h', '--help', description)
 
           description = "Show the current #{executable} version (#{VERSION})"
-          opts.on('-v', '--version', description) { @subcommand = :version }
+          parser.on('-v', '--version', description) { @subcommand = :version }
         end
       end
 
