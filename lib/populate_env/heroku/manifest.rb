@@ -11,7 +11,11 @@ module PopulateEnv
         begin
           data = JSON.parse(@path.read, symbolize_names: true)
           env_vars = data.fetch(:env, {})
-          env_vars.merge!(data.dig(:environments, environment.to_sym, :env) || {})
+          env_vars.merge!(
+            data.fetch(:environments, {})
+                .fetch(environment.to_sym, {})
+                .fetch(:env, {})
+          )
 
           env_vars.map do |key, value|
             if value.is_a?(Hash)
