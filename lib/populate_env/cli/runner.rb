@@ -28,14 +28,14 @@ module PopulateEnv
 
       def option_parser
         @option_parser ||= OptionParser.new do |parser|
-          parser.banner = <<~BANNER
-            Usage:
-                #{executable} COMMAND [options]
-            
-            Commands:
-                heroku
-            
-            Options:
+          parser.banner = <<-BANNER
+Usage:
+    #{executable} COMMAND [options]
+
+Commands:
+    heroku
+
+Options:
           BANNER
 
           description = 'Show the help (combine with a command for full options)'
