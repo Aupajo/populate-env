@@ -14,6 +14,7 @@ module PopulateEnv
         heroku_remote: nil,
         skip_local_env: false,
         prompt_missing: true,
+        export: false,
         output: $stdout,
         input: $stdin,
         local_env: ENV
