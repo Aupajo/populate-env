@@ -9,17 +9,17 @@ module PopulateEnv
 
       def to_s
         output = ''
-        
+
         if attribute.description
           attribute.description.each_line do |line|
             output << "# #{line}\n"
           end
         end
-        
+
         if attribute.optional? && attribute.value.nil?
           output << "# "
         end
-        
+
         output << "#{attribute.name}=#{attribute.value}\n"
       end
     end

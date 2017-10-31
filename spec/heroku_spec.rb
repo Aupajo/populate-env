@@ -24,7 +24,7 @@ module PopulateEnv
           env_file = filesystem.join('.env')
 
           options.destination = env_file
-          
+
           input.write('provided')
           input.rewind
 
@@ -32,7 +32,7 @@ module PopulateEnv
             heroku	https://git.heroku.com/spronking-calamity-15603.git (fetch)
             heroku	https://git.heroku.com/spronking-calamity-15603.git (push)
           REMOTES
-          
+
           expect(ShellCommand).to receive(:run).with('heroku config --json --remote heroku').and_return <<~EXTERNAL_CONFIG
             {
               "REMOTE": "obtained"
@@ -51,13 +51,13 @@ module PopulateEnv
 
             OVERRIDDEN: "development"
               => using default from complex-app.json
-            
+
             SECRET: "topsecret"
               => generated secret
 
             OPTIONAL: (skipped)
               => no value available
-            
+
             REMOTE: "obtained"
               => using value from Heroku ("--remote heroku")
 
@@ -77,7 +77,7 @@ module PopulateEnv
 
             # An optional setting
             # OPTIONAL=
-            
+
             # A setting fetched from a Heroku remote
             REMOTE=obtained
 

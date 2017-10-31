@@ -54,7 +54,7 @@ module PopulateEnv
       def git_remotes
         @git_remotes ||= begin
           raw_remotes = ShellCommand.run('git remote --verbose').split("\n")
-        
+
           raw_remotes.each_with_object(Set.new) do |line, remotes|
             remote, url, _ = line.split
             remotes << remote if url.include?('heroku.com')

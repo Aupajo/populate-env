@@ -29,7 +29,7 @@ module PopulateEnv
       def content
         sections.compact.join("\n")
       end
-      
+
       def perform
         options.destination.write(content)
       end

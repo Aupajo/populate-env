@@ -26,7 +26,7 @@ module PopulateEnv
         expect(CLI::HerokuOptions).to receive(:parse)
           .with(%w( --various options ), command: 'command heroku')
           .and_return(parsed_options)
-        
+
         expect(PopulateEnv::Heroku).to receive(:call).with(parsed_options)
 
         CLI.start(argv: %w( heroku --various options ), executable: 'command')
