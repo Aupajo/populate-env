@@ -31,7 +31,11 @@ module PopulateEnv
       end
       
       def perform
+        old_umask = File.umask
+        subtract_group_and_other_rwx=077
+        File.umask(subtract_group_and_other_rwx)
         options.destination.write(content)
+        File.umask(old_umask)
       end
     end
   end
