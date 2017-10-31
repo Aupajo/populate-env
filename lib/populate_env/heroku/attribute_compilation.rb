@@ -24,7 +24,7 @@ module PopulateEnv
       private
 
       def attempt_to_populate_value
-        if !options.skip_local_env && options.local_env[definition.name]
+        if options.skip_local_env && options.local_env[definition.name]
           skip_due_to_local_env_var
           return
         end
