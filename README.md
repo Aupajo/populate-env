@@ -45,22 +45,22 @@ Heroku apps can describe which environment variables they need via an [app.json 
 Given this file, running the following command will generate a `.env` file:
 
     $ populate-env heroku
-    
+
     BRAND_COLOUR: "smaragdine"
       => using default from app.json
-    
+
     AMAZING_WEB_SERVICES_TOKEN: "token-from-heroku-app"
       => using value from detected Heroku remote "dev"
-    
+
     WEB_CONCURRENCY: "5"
       => using default from app.json
-    
+
     LEATHER_SEATS: (skipped)
       => no value available
-    
+
     SECRET_TOKEN: "1d8505..."
       => generated secret (32 chars)
-    
+
     WEB_CONCURRENCY: "5"
       => using default from app.json
 

@@ -9,7 +9,7 @@ module PopulateEnv
 
       def perform
         options.output.print "#{definition.name}:"
-        
+
         attempt_to_populate_value
 
         unless @skip_log
@@ -28,12 +28,12 @@ module PopulateEnv
           skip_due_to_local_env_var
           return
         end
-        
+
         if definition.default
           use_manifest_default
           return
         end
-      
+
         if definition.generator == 'secret' && options.generate_secrets
           generate_secret
           return
@@ -48,12 +48,12 @@ module PopulateEnv
           attempt_to_read_from_heroku_config
           return if @value
         end
-      
+
         if options.prompt_missing
           prompt_user_for_missing_value
           return if @value
         end
-      
+
         fail "Required environment variable #{definition.name} could not be populated!"
       end
 
@@ -88,7 +88,7 @@ module PopulateEnv
 
       def attempt_to_read_from_heroku_config
         @value = remote_config[definition.name]
-        
+
         if @value
           @explanation = "using value from Heroku (#{remote_config.heroku_app_flag.inspect})"
         end

@@ -10,20 +10,20 @@ module PopulateEnv
       def run
         send(subcommand)
       end
-      
+
       def help
         output.puts option_parser.to_s
       end
-      
+
       def version
         output.puts "#{executable} version #{VERSION}"
       end
-      
+
       def heroku
         options = CLI::HerokuOptions.parse(argv, command: "#{executable} heroku")
         PopulateEnv::Heroku.call(options)
       end
-      
+
       private
 
       def option_parser
@@ -31,10 +31,10 @@ module PopulateEnv
           parser.banner = <<~BANNER
             Usage:
                 #{executable} COMMAND [options]
-            
+
             Commands:
                 heroku
-            
+
             Options:
           BANNER
 
