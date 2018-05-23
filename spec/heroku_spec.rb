@@ -28,61 +28,61 @@ module PopulateEnv
           input.write('provided')
           input.rewind
 
-          expect(ShellCommand).to receive(:run).with('git remote --verbose').and_return <<~REMOTES
-            heroku	https://git.heroku.com/spronking-calamity-15603.git (fetch)
-            heroku	https://git.heroku.com/spronking-calamity-15603.git (push)
+          expect(ShellCommand).to receive(:run).with('git remote --verbose').and_return <<-REMOTES
+heroku	https://git.heroku.com/spronking-calamity-15603.git (fetch)
+heroku	https://git.heroku.com/spronking-calamity-15603.git (push)
           REMOTES
           
-          expect(ShellCommand).to receive(:run).with('heroku config --json --remote heroku').and_return <<~EXTERNAL_CONFIG
-            {
-              "REMOTE": "obtained"
-            }
+          expect(ShellCommand).to receive(:run).with('heroku config --json --remote heroku').and_return <<-EXTERNAL_CONFIG
+{
+  "REMOTE": "obtained"
+}
           EXTERNAL_CONFIG
 
           Heroku.call(options)
 
           output.rewind
-          expect(output.read.strip).to eq <<~PROMPT.strip
-            SIMPLE: "value"
-              => using default from complex-app.json
+          expect(output.read.strip).to eq <<-PROMPT.strip
+SIMPLE: "value"
+  => using default from complex-app.json
 
-            ENV_VAR: (skipped)
-              => found in local ENV
+ENV_VAR: (skipped)
+  => found in local ENV
 
-            OVERRIDDEN: "development"
-              => using default from complex-app.json
-            
-            SECRET: "topsecret"
-              => generated secret
+OVERRIDDEN: "development"
+  => using default from complex-app.json
 
-            OPTIONAL: (skipped)
-              => no value available
-            
-            REMOTE: "obtained"
-              => using value from Heroku ("--remote heroku")
+SECRET: "topsecret"
+  => generated secret
 
-            MISSING:
-              A required, missing setting
+OPTIONAL: (skipped)
+  => no value available
 
-              => Please provide a value for MISSING:
+REMOTE: "obtained"
+  => using value from Heroku ("--remote heroku")
+
+MISSING:
+  A required, missing setting
+
+  => Please provide a value for MISSING:
           PROMPT
 
-          expect(env_file.read).to eq <<~DOTENV
-            SIMPLE=value
+          expect(env_file.read).to eq <<-DOTENV
+SIMPLE=value
 
-            OVERRIDDEN=development
+OVERRIDDEN=development
 
-            # A secret
-            SECRET=topsecret
+# A secret
+SECRET=topsecret
 
-            # An optional setting
-            # OPTIONAL=
-            
-            # A setting fetched from a Heroku remote
-            REMOTE=obtained
+# An optional setting
+# OPTIONAL=
 
-            # A required, missing setting
-            MISSING=provided
+# A setting fetched from a Heroku remote
+REMOTE=obtained
+
+# A required, missing setting
+MISSING=provided
           DOTENV
         end
       end
