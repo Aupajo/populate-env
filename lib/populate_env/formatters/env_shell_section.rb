@@ -1,10 +1,15 @@
 module PopulateEnv
   module Formatters
     class EnvShellSection
-      attr_reader :attribute
+      attr_reader :attribute, :export
 
-      def initialize(attribute)
+      def initialize(attribute, export: false)
         @attribute = attribute
+        @export = export
+      end
+
+      def prefix
+        export ? "export " : ""
       end
 
       def to_s
@@ -20,7 +25,7 @@ module PopulateEnv
           output << "# "
         end
         
-        output << "#{attribute.name}=#{attribute.value}\n"
+        output << "#{prefix}#{attribute.name}=#{attribute.value}\n"
       end
     end
   end

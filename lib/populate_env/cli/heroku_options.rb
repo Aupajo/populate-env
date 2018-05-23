@@ -57,6 +57,11 @@ module PopulateEnv
           options.prompt_missing = value
         end
 
+        description = "Prefix variable declarations in output with export (defaults to #{options.skip_local_env})"
+        parser.on("--[no-]export", description) do |value|
+          options.export = value
+        end
+
         parser.parse!(argv)
 
         options

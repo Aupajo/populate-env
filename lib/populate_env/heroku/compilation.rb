@@ -22,7 +22,7 @@ module PopulateEnv
       def sections
         attribute_definitions.map do |definition|
           attribute = AttributeCompilation.new(definition, options, remote_config).perform
-          Formatters::EnvShellSection.new(attribute) if attribute
+          Formatters::EnvShellSection.new(attribute, export: options.export) if attribute
         end
       end
 
