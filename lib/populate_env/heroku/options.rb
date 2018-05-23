@@ -12,7 +12,7 @@ module PopulateEnv
         use_heroku_config: true,
         heroku_app: nil,
         heroku_remote: nil,
-        skip_local_env: false,
+        skip_local_env: true,
         prompt_missing: true,
         output: $stdout,
         input: $stdin,
